@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'List events' %}
+
+{% block body %}
+    <section id="list-events">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 m-auto">
+                    <h1 class="fw-bolder" style="color: limegreen;">List all events</h1>
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
+                        {% for event in events %}
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h5 class="fw-bolder mb-0">
+                                                <a href="{{ path('app_event_show', {id: event.id}) }}"
+                                                   class="stretched-link text-decoration-none"
+                                                   style="color: limegreen;">{{ event.name }}</a>
+                                            </h5>
+                                        </div>
+                                        <div class="card-text d-flex justify-content-between">
+                                            <div>
+                                                {% if event.project is not null %}
+                                                    <p class="my-0">{{ event.project.name }}</p>
+                                                {% endif %}
+                                                {% if event.organizations|length > 0 %}
+                                                    <p class="my-0">{{ event.organizations|map(o => o.name)|join(', ') }}</p>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <p class="mb-0">From <span
+                                                            class="fw-semibold">{{ event.startAt|date('d/m/y') }}</span>
+                                                    to
+                                                    <span class="fw-semibold">{{ event.endAt|date('d/m/y') }}</span></p>
+                                                <p class="my-0 fst-italic">{{ event.volunteers|length }} volunteers
+                                                    yet.</p>
+                                                <p class="mt-0">Accessible
+                                                    : {{ event.accessible ? '<span style="color: limegreen;">Yes</span>' : '<span style="color: red;">No</span>' }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div> There are no events yet...</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

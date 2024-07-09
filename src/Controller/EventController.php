@@ -8,7 +8,6 @@ use App\Entity\Event;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -39,26 +38,20 @@ class EventController extends AbstractController
     }
 
     #[Route('/events', name: 'app_event_list', methods: ['GET'])]
-    public function listEvents(EventRepository $eventRepository): JsonResponse
+    public function listEvents(EventRepository $eventRepository): Response
     {
-        $events = [];
+        $events = $eventRepository->listAll();
 
-        foreach ($eventRepository->listAll() as $event) {
-            $events[] = [
-                'id' => $event->getId(),
-                'name' => $event->getName(),
-            ];
-        }
-
-        return $this->json($events);
+        return $this->render('event/list_events.html.twig', [
+            'events' => $events,
+        ]);
     }
 
     #[Route('/events/{id}', name: 'app_event_show', methods: ['GET'])]
-    public function showEvent(Event $event): JsonResponse
+    public function showEvent(Event $event): Response
     {
-        return $this->json([
-            'id' => $event->getId(),
-            'name' => $event->getName(),
+        return $this->render('event/show_event.html.twig', [
+            'event' => $event,
         ]);
     }
 }
