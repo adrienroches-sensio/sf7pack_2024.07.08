@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -34,5 +36,20 @@ class EventController extends AbstractController
         $em->flush();
 
         return new Response('Event created');
+    }
+
+    #[Route('/events', name: 'app_event_list', methods: ['GET'])]
+    public function listEvents(EventRepository $eventRepository): JsonResponse
+    {
+        $events = [];
+
+        foreach ($eventRepository->listAll() as $event) {
+            $events[] = [
+                'id' => $event->getId(),
+                'name' => $event->getName(),
+            ];
+        }
+
+        return $this->json($events);
     }
 }

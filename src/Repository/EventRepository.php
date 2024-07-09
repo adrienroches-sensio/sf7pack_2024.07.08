@@ -20,6 +20,14 @@ class EventRepository extends ServiceEntityRepository
 
     /**
      * @return list<Event>
+     */
+    public function listAll(): array
+    {
+        return $this->findAll();
+    }
+
+    /**
+     * @return list<Event>
      *
      * @throws InvalidArgumentException If both $start & $end are null.
      */
