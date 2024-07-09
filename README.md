@@ -14,6 +14,7 @@ Run the following commands :
 $ symfony composer install
 $ symfony console importmap:install
 $ symfony console doctrine:database:create
+$ symfony console doctrine:migration:migrate -n
 ```
 
 Then start the server with :
