@@ -14,7 +14,7 @@ final class Version20240709124305 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return '[Event] Make project optional.';
     }
 
     public function up(Schema $schema): void
