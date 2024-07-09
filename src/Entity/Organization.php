@@ -31,9 +31,16 @@ class Organization
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'organizations')]
     private Collection $events;
 
+    /**
+     * @var Collection<int, Project>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'organizations')]
+    private Collection $projects;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +106,33 @@ class Organization
     {
         if ($this->events->removeElement($event)) {
             $event->removeOrganization($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->addOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeOrganization($this);
         }
 
         return $this;
