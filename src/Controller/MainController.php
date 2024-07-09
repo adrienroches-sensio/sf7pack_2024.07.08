@@ -16,14 +16,9 @@ final class MainController extends AbstractController
     {
         $name = $request->query->get('name', 'World');
 
-        return new Response(<<<"HTML"
-        <html>
-            <body>
-                Hello {$name}!
-            </body>
-        </html>
-        HTML
-        );
+        return $this->render('main/index.html.twig', [
+            'name' => $name,
+        ]);
     }
 
     #[Route('/contact', name: 'app_main_contact')]
