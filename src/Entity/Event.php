@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,17 @@ class Event
 
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
+
+    /**
+     * @var Collection<int, Volunteer>
+     */
+    #[ORM\OneToMany(targetEntity: Volunteer::class, mappedBy: 'event', orphanRemoval: true)]
+    private Collection $volunteers;
+
+    public function __construct()
+    {
+        $this->volunteers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +118,36 @@ class Event
     public function setEndAt(\DateTimeImmutable $endAt): static
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Volunteer>
+     */
+    public function getVolunteers(): Collection
+    {
+        return $this->volunteers;
+    }
+
+    public function addVolunteer(Volunteer $volunteer): static
+    {
+        if (!$this->volunteers->contains($volunteer)) {
+            $this->volunteers->add($volunteer);
+            $volunteer->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVolunteer(Volunteer $volunteer): static
+    {
+        if ($this->volunteers->removeElement($volunteer)) {
+            // set the owning side to null (unless already changed)
+            if ($volunteer->getEvent() === $this) {
+                $volunteer->setEvent(null);
+            }
+        }
 
         return $this;
     }

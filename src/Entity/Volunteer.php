@@ -19,6 +19,10 @@ class Volunteer
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'volunteers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Event $event = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class Volunteer
     public function setEndAt(\DateTimeImmutable $endAt): static
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): static
+    {
+        $this->event = $event;
 
         return $this;
     }
