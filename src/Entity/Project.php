@@ -27,7 +27,6 @@ class Project
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
 
-    #[Assert\NotNull()]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -94,7 +93,7 @@ class Project
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable|null $createdAt): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
