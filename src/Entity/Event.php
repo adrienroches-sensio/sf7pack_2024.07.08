@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -16,21 +17,31 @@ class Event
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotNull()]
+    #[Assert\Length(min: 10)]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\NotNull()]
+    #[Assert\Length(min: 30)]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[Assert\NotNull()]
     #[ORM\Column]
     private ?bool $accessible = null;
 
+    #[Assert\Length(min: 20)]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $prerequisites = null;
 
+    #[Assert\NotNull()]
+    #[Assert\GreaterThanOrEqual('today')]
     #[ORM\Column]
     private ?\DateTimeImmutable $startAt = null;
 
+    #[Assert\NotNull()]
+    #[Assert\GreaterThanOrEqual(propertyPath: 'startAt')]
     #[ORM\Column]
     private ?\DateTimeImmutable $endAt = null;
 
@@ -43,6 +54,7 @@ class Event
     /**
      * @var Collection<int, Organization>
      */
+    #[Assert\Count(min: 1)]
     #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'events')]
     private Collection $organizations;
 
@@ -114,7 +126,7 @@ class Event
         return $this->startAt;
     }
 
-    public function setStartAt(\DateTimeImmutable $startAt): static
+    public function setStartAt(\DateTimeImmutable|null $startAt): static
     {
         $this->startAt = $startAt;
 
@@ -126,7 +138,7 @@ class Event
         return $this->endAt;
     }
 
-    public function setEndAt(\DateTimeImmutable $endAt): static
+    public function setEndAt(\DateTimeImmutable|null $endAt): static
     {
         $this->endAt = $endAt;
 
