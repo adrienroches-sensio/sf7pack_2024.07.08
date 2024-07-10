@@ -19,8 +19,11 @@
                                     <p>From <span
                                                 class="fw-semibold">{{ event.startAt|date('d/m/y') }}</span> to
                                         <span class="fw-semibold">{{ event.endAt|date('d/m/y') }}</span></p>
-                                    <p class="my-0">Project: {{ event.project.name ?? '' }}</p>
-                                    <p class="my-0">Organizations: {{ event.organizations|map(o => o.name)|join(', ') }}</p>
+                                    <p class="my-0">Project: <a href="{{ path('app_project_show', {id: event.project.id}) }}">{{ event.project.name }}</a></p>
+                                    <p class="my-0">Organizations:
+                                        {% for organization in event.organizations %}
+                                            <a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>{% if not loop.last %},&nbsp;{% endif %}
+                                        {% endfor %}</p>
                                     <p>Accessible
                                         : {{ event.accessible ? '<span style="color: limegreen;">Yes</span>' : '<span style="color: red;">No</span>' }}</p>
                                 </div>

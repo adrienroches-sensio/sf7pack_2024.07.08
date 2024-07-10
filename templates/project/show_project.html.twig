@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ project.name }} - Details{% endblock %}
+
+{% block body %}
+    <div class="container flex-grow-1 container-p-y">
+        <div class="row">
+            <div class="col-md-8 m-auto">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h1 class="fw-bold" style="color: limegreen;">{{ project.name }}</h1>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between mt-4">
+                                <div>
+                                    <p>Created <span
+                                                class="fw-semibold">{{ project.createdAt|date('d/m/y') }}</span></p>
+                                </div>
+                                <p class="fst-italic">{{ project.volunteers.count }} volunteers yet.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="">{{ project.summary }}</p>
+                        </li>
+                        <li class="list-group-item">
+                            <h3>Organizations</h3>
+                            <ul class="list-group list-group-flush">
+                                {% for organization in project.organizations %}
+                                    <li class="list-group-item">
+                                        <a href="{{ path('app_organization_show', {id: organization.id}) }}">{{ organization.name }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="list-group-item">No organizations yet.</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <h3>Events</h3>
+                            <ul class="list-group list-group-flush">
+                                {% for event in project.events %}
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <a href="{{ path('app_event_show', {id: event.id}) }}">{{ event.name }}</a>
+                                        <span>From {{ event.startAt|date('d/m/y') }} to {{ event.endAt|date('d/m/y') }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="list-group-item">No events yet.</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 m-auto justify-content-start">
+                <a href="{{ path('app_project_list') }}">
+                    <button class="btn text-white" style="background-color: limegreen;">Back</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Event;
 use App\Entity\Organization;
+use App\Entity\Project;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -24,6 +25,7 @@ final class OrganizationFixtures extends Fixture implements DependentFixtureInte
         for ($i = 2015; $i <= 2025; $i++) {
             $organization->addEvent($this->getReference("Event_{$i}", Event::class));
         }
+        $organization->addProject($this->getReference(ProjectFixtures::SymfonyLive, Project::class));
 
         $manager->persist($organization);
         $manager->flush();
@@ -33,6 +35,7 @@ final class OrganizationFixtures extends Fixture implements DependentFixtureInte
     {
         return [
             EventFixtures::class,
+            ProjectFixtures::class,
         ];
     }
 }

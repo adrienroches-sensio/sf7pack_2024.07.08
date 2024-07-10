@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'List projects' %}
+
+{% block body %}
+    <section id="list-projects">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 m-auto">
+                    <h1 class="fw-bolder" style="color: limegreen;">List all projects</h1>
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mb-5">
+                        {% for project in projects %}
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="card-text d-flex justify-content-between">
+                                            <div>
+                                                <h5 class="fw-bolder mb-0">
+                                                    <a href="{{ path('app_project_show', {id: project.id}) }}"
+                                                       class="stretched-link text-decoration-none"
+                                                       style="color: limegreen;">{{ project.name }}</a>
+                                                </h5>
+                                                <p class="my-0">{{ project.events.count }} events.</p>
+                                                {% if project.organizations.count > 0 %}
+                                                    <p class="my-0">{{ project.organizations|map(o => o.name)|join(', ') }}</p>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <p class="mb-0">Created <span
+                                                            class="fw-semibold">{{ project.createdAt|date('d/m/y') }}</span></p>
+                                                <p class="my-0 fst-italic">{{ project.volunteers.count }} volunteers
+                                                    yet.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div> There are no projects yet...</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
