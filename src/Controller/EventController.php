@@ -5,31 +5,25 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Form\EventType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class EventController extends AbstractController
 {
-    #[Route('/event/{name}/{start}/{end}',
+    #[Route('/event/new',
         name: 'app_event_new',
-        requirements: [
-            'name' => '(\w|[- ])+',
-            'start' => '\d{2}-\d{2}-\d{4}',
-            'end' => '\d{2}-\d{2}-\d{4}',
-        ],
+        methods: ['GET', 'POST']
     )]
-    public function newEvent(string $name, string $start, string $end, EntityManagerInterface $em): Response
+    public function newEvent(EntityManagerInterface $em): Response
     {
-        $event = (new Event())
-            ->setName($name)
-            ->setDescription('Some generic description')
-            ->setAccessible(true)
-            ->setStartAt(new \DateTimeImmutable($start))
-            ->setEndAt(new \DateTimeImmutable($end))
-        ;
+        $event = new Event();
+
+        $form = $this->createForm(EventType::class, $event);
 
         $em->persist($event);
         $em->flush();
