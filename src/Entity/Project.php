@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
@@ -16,12 +17,17 @@ class Project
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotNull()]
+    #[Assert\Length(min: 10)]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\NotNull()]
+    #[Assert\Length(min: 30)]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
 
+    #[Assert\NotNull()]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -31,6 +37,7 @@ class Project
     /**
      * @var Collection<int, Organization>
      */
+    #[Assert\Count(min: 1)]
     #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'projects')]
     private Collection $organizations;
 
@@ -87,7 +94,7 @@ class Project
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTimeImmutable|null $createdAt): static
     {
         $this->createdAt = $createdAt;
 
