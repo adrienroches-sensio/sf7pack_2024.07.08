@@ -23,3 +23,10 @@ Then start the server with :
 ```bash
 $ symfony serve -d
 ```
+
+Then you can log in with :
+* user / user [ROLE_USER]
+* website / website [ROLE_WEBSITE]
+* volunteer / volunteer [ROLE_VOLUNTEER]
+* organizer / organizer [ROLE_ORGANIZER]
+* admin / admin [ROLE_ADMIN]
