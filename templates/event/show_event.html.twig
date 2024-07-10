@@ -40,8 +40,11 @@
         </div>
         <div class="row">
             <div class="col-md-8 m-auto justify-content-start">
+                <a href="{{ path('app_volunteer_new', {'event': event.id}) }}">
+                    <button class="btn text-white" style="background-color: limegreen;">Volunteer on this event</button>
+                </a>
                 <a href="{{ path('app_event_list') }}">
-                    <button class="btn text-white" style="background-color: limegreen;">Back</button>
+                    <button class="btn text-black bg-white" style="border-color: limegreen;">Back</button>
                 </a>
             </div>
         </div>
