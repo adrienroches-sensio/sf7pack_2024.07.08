@@ -26,5 +26,8 @@ services:
     App\Search\Event\EventSearchInterface:
         alias: 'App\Search\Event\ApiEventSearch'
 
+    App\Search\Event\ApiWatcherEventSearch:
+        decorates: 'App\Search\Event\ApiEventSearch'
+
     App\Search\Event\CachedEventSearch:
         decorates: 'App\Search\Event\EventSearchInterface'
