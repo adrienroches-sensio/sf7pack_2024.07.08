@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Search\Event;
 
+use Symfony\Component\HttpClient\HttpClient;
+
 final class ApiEventSearch implements EventSearchInterface
 {
     public function __construct(
@@ -13,6 +15,16 @@ final class ApiEventSearch implements EventSearchInterface
 
     public function searchByName(?string $name = null): array
     {
-        // TODO: Implement searchByName() method.
+        $client = HttpClient::create();
+
+        return $client->request('GET', 'https://www.devevents-api.fr/events', [
+            'query' => [
+                'name' => $name ?? '',
+            ],
+            'headers' => [
+                'apikey' => $this->deveventsApiKey,
+                'Accept' => 'application/json',
+            ],
+        ])->toArray();
     }
 }
