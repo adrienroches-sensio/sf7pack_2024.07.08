@@ -9,20 +9,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class ApiEventSearch implements EventSearchInterface
 {
     public function __construct(
-        private readonly HttpClientInterface $client,
-        private readonly string $deveventsApiKey,
+        private readonly HttpClientInterface $deveventsClient,
     ) {
     }
 
     public function searchByName(?string $name = null): array
     {
-        return $this->client->request('GET', 'https://www.devevents-api.fr/events', [
+        return $this->deveventsClient->request('GET', '/events', [
             'query' => [
                 'name' => $name ?? '',
-            ],
-            'headers' => [
-                'apikey' => $this->deveventsApiKey,
-                'Accept' => 'application/json',
             ],
         ])->toArray();
     }
