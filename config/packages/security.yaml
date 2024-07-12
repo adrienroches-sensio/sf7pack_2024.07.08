@@ -9,6 +9,14 @@ security:
             entity:
                 class: App\Entity\User
                 property: username
+
+    role_hierarchy:
+        ROLE_USER: ~
+        ROLE_VOLUNTEER: 'ROLE_USER'
+        ROLE_WEBSITE: 'ROLE_USER'
+        ROLE_ORGANIZER: 'ROLE_VOLUNTEER'
+        ROLE_ADMIN: [ 'ROLE_ORGANIZER', 'ROLE_WEBSITE' ]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
