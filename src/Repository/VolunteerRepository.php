@@ -16,6 +16,22 @@ class VolunteerRepository extends ServiceEntityRepository
         parent::__construct($registry, Volunteer::class);
     }
 
+    public function listAll(): array
+    {
+        $qb = $this->createQueryBuilder('volunteer');
+
+        $qb
+            ->addSelect('user')
+            ->addSelect('project')
+            ->addSelect('event')
+            ->leftJoin('volunteer.forUser', 'user')
+            ->leftJoin('volunteer.project', 'project')
+            ->leftJoin('volunteer.event', 'event')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Volunteer[] Returns an array of Volunteer objects
     //     */

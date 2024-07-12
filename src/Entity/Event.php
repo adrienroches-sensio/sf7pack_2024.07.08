@@ -9,16 +9,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups as SerializeGroups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event implements CreatorAwareInterface, OrganizationAwareInterface
 {
+    #[SerializeGroups('Volunteer')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[SerializeGroups('Volunteer')]
     #[Assert\NotNull()]
     #[Assert\Length(min: 10)]
     #[ORM\Column(length: 255)]

@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\VolunteerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups as SerializeGroups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use function dump;
 
+#[SerializeGroups('Volunteer')]
 #[Assert\GroupSequence(['Volunteer', 'Strict'])]
 #[ORM\Entity(repositoryClass: VolunteerRepository::class)]
 class Volunteer
