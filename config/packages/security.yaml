@@ -21,6 +21,13 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        api:
+            pattern: '^/api'
+            stateless: true
+            custom_authenticators:
+                - App\Security\ApiAuthenticator
+
         main:
             lazy: true
             provider: app_user_provider
@@ -30,8 +37,6 @@ security:
                 enable_csrf: true
             logout:
                 path: app_logout
-            custom_authenticators:
-                - App\Security\ApiAuthenticator
                 # where to redirect after logout
                 # target: app_any_route
 
