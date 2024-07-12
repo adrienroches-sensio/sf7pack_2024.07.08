@@ -59,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'users')]
     private Collection $organizations;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $apiKey = null;
+
     public function __construct()
     {
         $this->volunteers = new ArrayCollection();
@@ -259,5 +262,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function isEqualTo(UserInterface $user): bool
     {
         return $this->getUserIdentifier() === $user->getUserIdentifier();
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
+    }
+
+    public function setApiKey(?string $apiKey): static
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
     }
 }

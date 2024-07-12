@@ -9,6 +9,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use function array_key_exists;
+use function base64_encode;
+use function password_hash;
+use function random_bytes;
+use const PASSWORD_BCRYPT;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -53,6 +57,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setUsername($userData['username'])
                 ->setPassword($this->passwordHasherFactory->getPasswordHasher(User::class)->hash($userData['password']))
                 ->setRoles($userData['roles'])
+                ->setApiKey(password_hash(base64_encode(random_bytes(48)), PASSWORD_BCRYPT))
             ;
 
             if (array_key_exists('organization', $userData)) {
