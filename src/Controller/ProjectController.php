@@ -41,6 +41,7 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $project->setCreatedAt(new DateTimeImmutable());
+            $project->setCreatedBy($this->getUser());
 
             $em->persist($project);
             $em->flush();
