@@ -27,6 +27,8 @@ final class OrganizationFixtures extends Fixture implements DependentFixtureInte
         }
         $organization->addProject($this->getReference(ProjectFixtures::SymfonyLive, Project::class));
 
+        $this->addReference("Organization_{$organization->getName()}", $organization);
+
         $manager->persist($organization);
         $manager->flush();
     }

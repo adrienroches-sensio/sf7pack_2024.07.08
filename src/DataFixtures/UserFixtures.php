@@ -2,12 +2,15 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Organization;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use function array_key_exists;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     private const USERS = [
         [
@@ -24,6 +27,7 @@ class UserFixtures extends Fixture
             'username' => 'volunteer',
             'password' => 'volunteer',
             'roles' => ['ROLE_VOLUNTEER'],
+            'organization' => 'Symfony',
         ],
         [
             'username' => 'organizer',
@@ -51,10 +55,21 @@ class UserFixtures extends Fixture
                 ->setRoles($userData['roles'])
             ;
 
+            if (array_key_exists('organization', $userData)) {
+                $user->addOrganization($this->getReference("Organization_{$userData['organization']}", Organization::class));
+            }
+
             $this->addReference($userData['username'], $user);
             $manager->persist($user);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            OrganizationFixtures::class,
+        ];
     }
 }
