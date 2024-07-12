@@ -72,6 +72,11 @@ class Event
         $this->organizations = new ArrayCollection();
     }
 
+    public function isNew(): bool
+    {
+        return null === $this->getId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

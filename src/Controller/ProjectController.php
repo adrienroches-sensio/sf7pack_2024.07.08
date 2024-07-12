@@ -33,15 +33,19 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/project/new', name: 'app_project_new', methods: ['GET', 'POST'])]
-    public function newProject(Request $request, EntityManagerInterface $em): Response
+    #[Route('/project/{id}/edit', name: 'app_project_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function newProject(Request $request, Project|null $project, EntityManagerInterface $em): Response
     {
-        $project = new Project();
+        $project ??= new Project();
         $form = $this->createForm(ProjectType::class, $project);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $project->setCreatedAt(new DateTimeImmutable());
-            $project->setCreatedBy($this->getUser());
+
+            if ($project->isNew()) {
+                $project->setCreatedBy($this->getUser());
+            }
 
             $em->persist($project);
             $em->flush();
