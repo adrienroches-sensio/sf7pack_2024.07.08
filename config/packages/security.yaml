@@ -25,6 +25,8 @@ security:
         api:
             pattern: '^/api'
             stateless: true
+            json_login:
+                check_path: app_api_login
             custom_authenticators:
                 - App\Security\ApiAuthenticator
 

@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class VolunteerController extends AbstractController
 {
-    #[Route('/api/volunteer', name: 'app_api_volunteers')]
+    #[Route('/api/volunteers', name: 'app_api_volunteers')]
     public function list(VolunteerRepository $volunteerRepository): array
     {
         return $volunteerRepository->findAll();
