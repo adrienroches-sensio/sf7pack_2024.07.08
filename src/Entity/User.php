@@ -51,11 +51,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'createdBy')]
     private Collection $events;
 
+    /**
+     * @var Collection<int, Organization>
+     */
+    #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'users')]
+    private Collection $organizations;
+
     public function __construct()
     {
         $this->volunteers = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->organizations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +226,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $event->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Organization>
+     */
+    public function getOrganizations(): Collection
+    {
+        return $this->organizations;
+    }
+
+    public function addOrganization(Organization $organization): static
+    {
+        if (!$this->organizations->contains($organization)) {
+            $this->organizations->add($organization);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganization(Organization $organization): static
+    {
+        $this->organizations->removeElement($organization);
 
         return $this;
     }
