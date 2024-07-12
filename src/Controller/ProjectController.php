@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
+use App\Security\Permission;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +37,10 @@ class ProjectController extends AbstractController
     #[Route('/project/{id}/edit', name: 'app_project_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function newProject(Request $request, Project|null $project, EntityManagerInterface $em): Response
     {
+        if (null !== $project) {
+            $this->denyAccessUnlessGranted(Permission::EDIT_PROJECT, $project);
+        }
+
         $project ??= new Project();
         $form = $this->createForm(ProjectType::class, $project);
 

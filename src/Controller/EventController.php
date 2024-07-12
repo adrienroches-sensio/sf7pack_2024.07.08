@@ -8,6 +8,7 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Search\Event\DatabaseEventSearch;
 use App\Search\Event\EventSearchInterface;
+use App\Security\Permission;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,10 @@ class EventController extends AbstractController
     )]
     public function newEvent(Request $request, Event|null $event, EntityManagerInterface $em): Response
     {
+        if (null !== $event) {
+            $this->denyAccessUnlessGranted(Permission::EDIT_EVENT, $event);
+        }
+
         $event ??= new Event();
         $form = $this->createForm(EventType::class, $event);
 
